@@ -1,3 +1,7 @@
+#include <SoftwareSerial.h>
+
+ SoftwareSerial mySerial(16, 17);  //RX, TX 
+ 
  int button1 = 7; //set the button1 pin
  int button2 = 8; //set the button2 pin
  int LED = 4; //set the LED pin
