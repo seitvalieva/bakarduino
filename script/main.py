@@ -2,7 +2,6 @@ import time
 import network
 from machine import UART, Pin
 
-
 ssidRouter     = 'Coworking' #Enter the router name
 passwordRouter = 'C0w0rking!' #Enter the router password
 
@@ -17,20 +16,31 @@ def STA_Setup(ssidRouter,passwordRouter):
             pass
     print('Connected, IP address:', sta_if.ifconfig())
     print("Setup End")
-    
 
-# Initialize UART for communication with Arduino
+try:
+    STA_Setup(ssidRouter,passwordRouter)
+except:
+    sta_if.disconnect()
+    
 uart = UART(1, baudrate=115200, tx=17, rx=16)
 
-STA_Setup(ssidRouter,passwordRouter)
 while True:
     if uart.any():
-        data = uart.readline().strip()
-        if data:
-            motion_detected = data.decode()
-            if motion_detected == 'test':
-                print("la phrase est", motion_detected)
+        data = uart.readline()
+        data = data.decode()
+        data = data.strip()
+        if data: 
+            motion_detected = data
+            print(motion_detected)
+            print(data)
     time.sleep(1)
+
+# Product data configuration
+#APIKEY = "pv8nhcrtntbfopwmordfhx3ckw53ioxs7lls5ezr9mgwk1p6ouh73gyudm7sssd2"
+#DEVICE_DEVELOPER_ID = "236c337c-ef76-44db-944a-93e5191ab33b"
+#DEVICE_CHECKSUM = "siszZ86MWaBT8229zITXFkk+H02w/obKYrmXXmqw7Ws="
+#DATA_VERSION = "S1"
+#protocol_version = "v3"
     
     # Explanation
 # Arduino Code: The Arduino code initializes the motion sensor pin and sets up serial communication. It reads the sensor data (either HIGH or LOW), prints it to the Serial, and then waits for 1 second before reading again.
